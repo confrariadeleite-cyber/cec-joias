@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&amp;family=Manrope:wght@400;500;600;700&amp;family=Cormorant+Garamond:wght@300;400&amp;family=Quicksand:wght@600&amp;family=Cinzel:wght@400;500&amp;display=swap" rel="stylesheet">
+<script src="cc-config.js"></script>
+<style>
+*{box-sizing:border-box}html,body{overflow-x:hidden}
+body{margin:0;background:#F7F4EE;color:#252525;font-family:'Manrope',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#1B2348}a:hover{color:#A51C68}
+button,input,select{font-family:inherit;font-size:inherit;color:inherit}img{display:block}
+:focus-visible{outline:2px solid #A51C68;outline-offset:3px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-direction:column">
+<div style="background:#1B2348;color:#F7F4EE;font-size:13px">
+  <div style="max-width:1320px;margin:0 auto;padding:0 clamp(16px,4vw,48px);min-height:38px;display:flex;align-items:center;justify-content:center;gap:4px 16px;flex-wrap:wrap;text-align:center">
+    <span>Você está em <strong style="font-weight:700">{{ store.short }}</strong></span>
+    <span aria-hidden="true" style="color:#8D92B0">|</span>
+    <button onClick="{{ openSwitch }}" style="border:0;background:none;color:#F7F4EE;text-decoration:underline;cursor:pointer;min-height:36px;padding:0;font-weight:600">Trocar loja</button>
+    <sc-if value="{{ desk }}" hint-placeholder-val="{{ true }}"><span aria-hidden="true" style="color:#8D92B0">|</span><a href="{{ otherHref }}" style="color:#E4D6BC;min-height:36px;display:inline-flex;align-items:center">Conheça nossa outra loja</a></sc-if>
+  </div>
+</div>
+<header style="position:sticky;top:0;z-index:40;background:rgba(247,244,238,.98);border-bottom:1px solid #E2DCD0">
+  <div style="max-width:1320px;margin:0 auto;padding:0 clamp(12px,4vw,48px);height:{{ headH }};display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:14px">
+    <div style="display:flex;align-items:center;min-width:0">
+      <sc-if value="{{ hMob }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ openMenu }}" aria-label="Abrir menu" aria-expanded="{{ menuOpen }}" style="width:44px;height:44px;border:0;background:none;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></button>
+      </sc-if>
+      <sc-if value="{{ hDesk }}" hint-placeholder-val="{{ true }}">
+        <form role="search" onSubmit="{{ hs.submit }}" style="display:flex;align-items:center;width:100%;max-width:300px;border-bottom:1px solid #B9AF9C">
+          <label for="hs-q" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap">Buscar na loja</label>
+          <input id="hs-q" type="search" value="{{ hs.val }}" onChange="{{ hs.set }}" placeholder="O que você procura?" style="flex:1;min-width:0;height:44px;border:0;background:transparent;font-size:15px;padding:0 2px">
+          <button type="submit" aria-label="Buscar" style="width:44px;height:44px;border:0;background:none;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M15.5 15.5L21 21"></path></svg></button>
+        </form>
+      </sc-if>
+    </div>
+    <a href="{{ homeHref }}" aria-label="{{ logoAria }}" style="display:flex;flex-direction:column;align-items:center;text-decoration:none;color:#1B2348;line-height:1;flex:0 0 auto;justify-self:center">
+      <span style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:{{ logoBox }};height:{{ logoBox }};border-radius:50%;background:linear-gradient(180deg,#1E2550 0%,#262656 42%,#5E2766 72%,#A51C68 100%);box-shadow:0 0 0 1px rgba(27,35,72,.12)">
+        <span style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:{{ logoSize }};letter-spacing:-.03em;line-height:.85;color:#C9AE7E;margin-top:4px">{{ store.logoTop }}</span>
+        <span style="font-family:'Quicksand',sans-serif;font-size:{{ logoSubSize }};font-weight:600;letter-spacing:.08em;margin-top:1px;padding-left:.08em;color:#D9C29A">{{ store.logoSub }}</span>
+      </span>
+    </a>
+    <div style="display:flex;align-items:center;justify-content:flex-end;gap:2px">
+      <sc-if value="{{ hMob }}" hint-placeholder-val="{{ false }}"><button onClick="{{ goSearch }}" aria-label="Buscar" style="width:44px;height:44px;border:0;background:none;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M15.5 15.5L21 21"></path></svg></button></sc-if>
+      <a href="#/favoritos" aria-label="{{ favAria }}" style="position:relative;width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:#252525"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"></path></svg><sc-if value="{{ hasFavs }}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="position:absolute;top:6px;right:4px;min-width:16px;height:16px;border-radius:8px;background:#1B2348;color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center;padding:0 4px">{{ favN }}</span></sc-if></a>
+      <a href="{{ bagHref }}" aria-label="{{ bagAria }}" style="position:relative;width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:#252525"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 8h14l-1.2 12.5H6.2L5 8z"></path><path d="M9 8V6.5a3 3 0 0 1 6 0V8"></path></svg><sc-if value="{{ hasBag }}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="position:absolute;top:6px;right:4px;min-width:16px;height:16px;border-radius:8px;background:{{ store.accent }};color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center;padding:0 4px">{{ bagN }}</span></sc-if></a>
+    </div>
+  </div>
+  <sc-if value="{{ hDesk }}" hint-placeholder-val="{{ true }}">
+  <div onMouseLeave="{{ megaClose }}" style="position:relative;border-top:1px solid #ECE6DA">
+    <nav aria-label="Principal" style="max-width:1320px;margin:0 auto;padding:0 48px;display:flex;justify-content:center;gap:36px">
+      <button onClick="{{ megaToggle }}" onMouseEnter="{{ megaOpen }}" aria-expanded="{{ megaIsOpen }}" aria-controls="cc-mega" style="font-size:13px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:#252525;padding:14px 0;white-space:nowrap;border:0;background:none;cursor:pointer;display:flex;align-items:center;gap:6px;border-bottom:1px solid {{ megaLine }}" style-hover="color:#A51C68">Comprar<svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M2 3.5l3 3 3-3"></path></svg></button>
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="5">
+        <a href="{{ n.href }}" onClick="{{ n.on }}" onMouseEnter="{{ megaClose }}" aria-current="{{ n.aria }}" style="font-size:13px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:#252525;padding:14px 0;white-space:nowrap;border-bottom:1px solid {{ n.line }}" style-hover="color:#A51C68">{{ n.lab }}</a>
+      </sc-for>
+    </nav>
+    <sc-if value="{{ megaIsOpen }}" hint-placeholder-val="{{ false }}">
+      <div id="cc-mega" style="position:absolute;left:0;right:0;top:100%;background:#FBF9F5;border-top:1px solid #ECE6DA;border-bottom:1px solid #E2DCD0;box-shadow:0 14px 28px rgba(27,35,72,.07)">
+        <div style="max-width:1320px;margin:0 auto;padding:32px 48px 36px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) minmax(0,1.2fr);gap:40px">
+          <div><h3 style="margin:0 0 10px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:#6A6A6A">Categorias</h3><sc-for list="{{ megaCats }}" as="m" hint-placeholder-count="4"><a href="{{ listHref }}" onClick="{{ m.on }}" style="font-size:15px;color:#252525;text-decoration:none;padding:5px 0;display:flex;justify-content:space-between;gap:12px" style-hover="color:#A51C68"><span>{{ m.n }}</span><span style="color:#6A6A6A;font-size:13px">{{ m.count }}</span></a></sc-for></div>
+          <div><h3 style="margin:0 0 10px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:#6A6A6A">Marcas</h3><sc-for list="{{ megaBrands }}" as="m" hint-placeholder-count="3"><a href="{{ listHref }}" onClick="{{ m.on }}" style="font-size:15px;color:#252525;text-decoration:none;padding:5px 0;display:flex;justify-content:space-between;gap:12px" style-hover="color:#A51C68">{{ m.n }}</a></sc-for></div>
+          <div><h3 style="margin:0 0 10px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:#6A6A6A">Por valor</h3><sc-for list="{{ megaPrices }}" as="m" hint-placeholder-count="3"><a href="{{ listHref }}" onClick="{{ m.on }}" style="font-size:15px;color:#252525;text-decoration:none;padding:5px 0;display:flex;justify-content:space-between;gap:12px" style-hover="color:#A51C68">{{ m.n }}</a></sc-for><a href="{{ listHref }}" onClick="{{ megaAll }}" style="display:inline-block;margin-top:14px;font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:600">Ver tudo ›</a></div>
+          <a href="{{ listHref }}" onClick="{{ megaAll }}" style="position:relative;display:block;aspect-ratio:16/10;overflow:hidden;background:#1B2348;text-decoration:none"><span aria-hidden="true" style="display:block;width:100%;height:100%;background-image:{{ megaBg }};background-size:cover;background-position:{{ megaPos }}"></span><span style="position:absolute;left:0;right:0;bottom:0;padding:36px 16px 14px;background:linear-gradient(to top,rgba(20,24,48,.85),rgba(20,24,48,0));color:#fff;font-family:'Bodoni Moda',serif;font-size:20px">Toda a coleção ›</span></a>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+  </sc-if>
+</header>
+
+<main style="flex:1 0 auto">
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+  <section aria-labelledby="h1" style="background:linear-gradient(180deg,#1E2550 0%,#262656 48%,#5E2766 82%,#8E1E62 100%);color:#F7F4EE">
+    <div style="max-width:1440px;margin:0 auto;display:grid;grid-template-columns:{{ heroCols }};align-items:stretch">
+      <div style="display:flex;flex-direction:column;justify-content:center;gap:22px;padding:clamp(36px,6vw,96px) clamp(20px,5vw,80px);order:{{ heroTextOrder }}">
+        <span style="font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:#E4D6BC;font-weight:700">{{ store.name }}</span>
+        <h1 id="h1" style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(38px,5vw,72px);line-height:1.05;color:#F7F4EE;text-wrap:balance">Detalhes que revelam sua presença.</h1>
+        <p style="margin:0;max-width:440px;font-size:17px;line-height:1.7;color:#E2E1EC">Descubra uma seleção de joias e acessórios para expressar o seu estilo.</p>
+        <sc-if value="{{ store.demo }}" hint-placeholder-val="{{ false }}"><p style="margin:0;font-size:13px;color:#F7F4EE;border-left:2px solid #E4D6BC;padding-left:12px">Página demonstrativa da segunda loja — dados a confirmar.</p></sc-if>
+        <div style="display:flex;flex-wrap:wrap;gap:12px">
+          <a href="{{ listHref }}" style="min-height:50px;padding:0 26px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;cursor:pointer;white-space:nowrap;background:#F7F4EE;color:#1B2348" style-hover="background:#fff;color:#1B2348">Explorar a coleção</a>
+          <button onClick="{{ goStores }}" style="min-height:50px;padding:0 26px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;cursor:pointer;white-space:nowrap;background:transparent;border:1px solid #F7F4EE;color:#F7F4EE" style-hover="background:rgba(247,244,238,.1)">Conhecer nossas lojas</button>
+        </div>
+      </div>
+      <div role="region" aria-roledescription="carrossel" aria-label="Fotos em destaque" onKeyDown="{{ hc.key }}" style="display:flex;flex-direction:column;min-width:0;background:#141A38">
+        <div onTouchStart="{{ hc.ts }}" onTouchEnd="{{ hc.te }}" style="position:relative;min-height:{{ heroImgH }};flex:1;overflow:hidden">
+          <sc-for list="{{ hc.slides }}" as="hs" hint-placeholder-count="1">
+            <div role="group" aria-roledescription="slide" aria-label="{{ hs.lab }}" aria-hidden="{{ hs.hidden }}" style="position:absolute;inset:0;opacity:{{ hs.op }};visibility:{{ hs.vis }};transition:opacity .6s ease, visibility .6s">
+              <sc-if value="{{ hs.ok }}" hint-placeholder-val="{{ false }}"><span role="img" aria-label="{{ hs.alt }}" style="position:absolute;inset:0;background-image:{{ hs.bg }};background-size:cover;background-position:{{ hs.pos }}"></span></sc-if>
+              <sc-if value="{{ hs.missing }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,#232B57 0 16px,#2A3262 16px 32px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:24px;text-align:center;color:#E4D6BC"><span style="font-family:'Bodoni Moda',serif;font-size:22px;color:#F7F4EE">{{ hs.cap }}</span><span style="font-family:ui-monospace,Menlo,monospace;font-size:12px;background:#F7F4EE;color:#1B2348;padding:4px 8px">foto a enviar · {{ hs.file }}</span></div></sc-if>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px clamp(12px,2vw,20px);background:#F7F4EE;color:#252525">
+          <a href="{{ hc.href }}" aria-live="polite" style="flex:1;min-width:0;font-size:14px;color:#252525;text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" style-hover="color:#A51C68">{{ hc.cap }}</a>
+          <span style="font-size:13px;color:#4A4A4A;font-variant-numeric:tabular-nums">{{ hc.pos }}</span>
+          <div style="display:flex;gap:6px">
+            <button onClick="{{ hc.prev }}" aria-label="Foto anterior" style="width:44px;height:44px;border:1px solid #CFC6B5;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#1B2348" style-hover="border-color:#1B2348"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M10 3L5 8l5 5"></path></svg></button>
+            <button onClick="{{ hc.next }}" aria-label="Próxima foto" style="width:44px;height:44px;border:1px solid #CFC6B5;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#1B2348" style-hover="border-color:#1B2348"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M6 3l5 5-5 5"></path></svg></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div style="background:#FBF9F5;border-bottom:1px solid #E2DCD0">
+    <ul style="list-style:none;margin:0 auto;max-width:1320px;padding:14px clamp(16px,4vw,48px);display:flex;flex-wrap:wrap;justify-content:center;gap:8px 44px;font-size:13px;letter-spacing:.04em;color:#3A3A3A;text-align:center">
+      <li>Atendimento humano pelo WhatsApp</li><li>Duas lojas, sacolas separadas</li><li>Disponibilidade confirmada no atendimento</li>
+    </ul>
+  </div>
+
+  <section id="mk" aria-labelledby="cat" style="max-width:1320px;margin:0 auto;padding:clamp(64px,8vw,112px) clamp(16px,4vw,48px) 0;text-align:center">
+    <h2 id="cat" style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(30px,3.4vw,46px);line-height:1.1;color:#1B2348;text-wrap:balance">Navegue por categoria</h2>
+    <p style="margin:10px 0 0;font-size:16px;color:#4A4A4A">Joias, relógios e acessórios para compor o seu estilo</p>
+    <div role="tablist" aria-label="Navegar por" style="display:inline-flex;gap:32px;margin:24px 0 36px;border-bottom:1px solid #E2DCD0"><button role="tab" aria-selected="{{ tabCat }}" onClick="{{ setTabCat }}" style="min-height:44px;padding:10px 2px;margin-bottom:-1px;border:0;border-bottom:2px solid {{ tabCatLine }};background:none;cursor:pointer;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:{{ tabCatColor }}">Categorias</button><button role="tab" aria-selected="{{ tabBrand }}" onClick="{{ setTabBrand }}" style="min-height:44px;padding:10px 2px;margin-bottom:-1px;border:0;border-bottom:2px solid {{ tabBrandLine }};background:none;cursor:pointer;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:{{ tabBrandColor }}">Marcas</button></div>
+    <sc-if value="{{ tabCat }}" hint-placeholder-val="{{ true }}">
+      <div role="tabpanel" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(40%,140px),1fr));gap:28px 20px;max-width:1080px;margin:0 auto">
+        <sc-for list="{{ catTiles }}" as="ct" hint-placeholder-count="5">
+          <a href="{{ ct.href }}" onClick="{{ ct.on }}" style="display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;color:#252525" style-hover="color:#A51C68">
+            <span style="display:block;width:min(100%,168px);aspect-ratio:1;border-radius:50%;overflow:hidden;background:#1E1E1E;box-shadow:0 0 0 1px #E2DCD0"><img src="{{ ct.img }}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:{{ ct.pos }}"></span>
+            <span style="font-size:15px">{{ ct.n }}</span>
+          </a>
+        </sc-for>
+      </div>
+    </sc-if>
+    <sc-if value="{{ tabBrand }}" hint-placeholder-val="{{ false }}">
+      <div role="tabpanel" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(40%,140px),1fr));gap:28px 20px;max-width:1080px;margin:0 auto">
+        <sc-for list="{{ brands }}" as="b" hint-placeholder-count="3">
+          <a href="{{ listHref }}" onClick="{{ b.on }}" style="display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;color:#252525" style-hover="color:#A51C68">
+            <span style="width:min(100%,168px);aspect-ratio:1;border-radius:50%;background:linear-gradient(180deg,#1E2550 0%,#262656 50%,#5E2766 85%,#8E1E62 100%);display:flex;align-items:center;justify-content:center;padding:16px;font-family:'Bodoni Moda',serif;font-size:19px;line-height:1.15;color:#F7F4EE;text-align:center">{{ b.n }}</span>
+            <span style="font-size:14px;color:#4A4A4A">{{ b.count }}</span>
+          </a>
+        </sc-for>
+      </div>
+    </sc-if>
+  </section>
+
+  <section aria-labelledby="sel" style="max-width:1320px;margin:0 auto;padding:clamp(64px,8vw,112px) clamp(16px,4vw,48px) 0">
+    <div style="text-align:center;margin-bottom:32px"><h2 id="sel" style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(30px,3.4vw,46px);line-height:1.1;color:#1B2348;text-wrap:balance">Seleção em destaque</h2><p style="margin:10px 0 0;font-size:16px;color:#4A4A4A">Novidades e peças escolhidas pela loja</p></div>
+    <sc-if value="{{ selEmpty }}" hint-placeholder-val="{{ false }}"><p style="margin:0;padding:40px;background:#EFEAE0;text-align:center">Nenhuma peça disponível nesta loja no momento.</p></sc-if>
+    <div style="position:relative">
+      <div ref="{{ rowRef }}" style="display:grid;grid-auto-flow:column;grid-auto-columns:{{ rowCol }};gap:clamp(12px,2vw,24px);overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;scroll-behavior:smooth">
+      <sc-for list="{{ selCards }}" as="c" hint-placeholder-count="4">
+        <article style="display:flex;flex-direction:column;gap:8px;min-width:0;scroll-snap-align:start">
+          <div style="position:relative;aspect-ratio:3/4;overflow:hidden;background:#1E1E1E">
+            <a href="{{ c.href }}" aria-label="{{ c.name }}" style="position:absolute;inset:0"><img src="{{ c.img }}" alt="{{ c.alt }}" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:{{ c.pos }};transition:transform .5s ease" style-hover="transform:scale(1.03)"></a>
+            <button onClick="{{ c.fav }}" aria-pressed="{{ c.isFav }}" aria-label="{{ c.favLab }}" style="position:absolute;top:8px;right:8px;width:44px;height:44px;border:0;background:rgba(247,244,238,.92);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#A51C68"><svg width="18" height="18" viewBox="0 0 24 24" fill="{{ c.heart }}" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"></path></svg></button>
+            <sc-if value="{{ c.out }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:0;bottom:0;background:#F7F4EE;color:#252525;font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:7px 10px">Indisponível nesta loja</span></sc-if>
+          </div>
+          <span style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#6A6A6A;margin-top:6px;min-height:14px">{{ c.brand }}</span>
+          <a href="{{ c.href }}" style="font-size:15px;line-height:1.35;color:#252525;text-decoration:none" style-hover="color:#A51C68">{{ c.name }}</a>
+          <span style="font-size:15px;font-weight:600;color:#1B2348">{{ c.price }}</span>
+        </article>
+      </sc-for>
+      </div>
+      <sc-if value="{{ rowArrows }}" hint-placeholder-val="{{ false }}"><button onClick="{{ rowPrev }}" aria-label="Peças anteriores" style="position:absolute;top:36%;left:-22px;width:44px;height:44px;border-radius:50%;border:1px solid #CFC6B5;background:#F7F4EE;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#1B2348" style-hover="border-color:#1B2348"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M10 3L5 8l5 5"></path></svg></button><button onClick="{{ rowNext }}" aria-label="Próximas peças" style="position:absolute;top:36%;right:-22px;width:44px;height:44px;border-radius:50%;border:1px solid #CFC6B5;background:#F7F4EE;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#1B2348" style-hover="border-color:#1B2348"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M6 3l5 5-5 5"></path></svg></button></sc-if>
+    </div>
+    <div style="text-align:center;margin-top:36px"><a href="{{ listHref }}" style="min-height:50px;padding:0 26px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;cursor:pointer;white-space:nowrap;border:1px solid #1B2348;color:#1B2348" style-hover="background:#ECE6DA">Ver toda a coleção</a></div>
+  </section>
+
+  <section aria-labelledby="dl" style="margin-top:clamp(64px,8vw,112px);background:#1B2348;color:#F7F4EE">
+    <div style="max-width:1320px;margin:0 auto;padding:clamp(44px,5vw,72px) clamp(16px,4vw,48px);display:flex;flex-wrap:wrap;gap:28px;align-items:center;justify-content:space-between">
+      <div style="max-width:620px;display:flex;flex-direction:column;gap:12px">
+        <span style="font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:#E4D6BC;font-weight:700">Nossas lojas</span>
+        <h2 id="dl" style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(30px,3.4vw,46px);line-height:1.1;color:#F7F4EE">Duas lojas, novas descobertas.</h2>
+        <p style="margin:0;font-size:16px;line-height:1.7;color:#D9DBE6">Cada loja tem catálogo, estoque e atendimento próprios. Seus favoritos acompanham você.</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px">
+        <a href="{{ otherHref }}" style="min-height:50px;padding:0 26px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;cursor:pointer;white-space:nowrap;background:#F7F4EE;color:#1B2348" style-hover="background:#fff;color:#1B2348">Conheça {{ otherShort }}</a>
+        <button onClick="{{ goStores }}" style="min-height:50px;padding:0 26px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;cursor:pointer;white-space:nowrap;background:transparent;border:1px solid #F7F4EE;color:#F7F4EE" style-hover="background:rgba(247,244,238,.1)">Ver as duas lojas</button>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="ed" style="max-width:1320px;margin:0 auto;padding:clamp(64px,8vw,112px) clamp(16px,4vw,48px) 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(28px,5vw,80px);align-items:center">
+    <div style="aspect-ratio:4/5;max-width:540px;width:100%;overflow:hidden;background:#11162E"><img src="{{ ed.img }}" alt="Modelo com blusa listrada azul usando colar riviera, anel e brincos de pedra turquesa" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:{{ ed.pos }}"></div>
+    <div style="display:flex;flex-direction:column;gap:18px;max-width:460px">
+      <span style="font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:#A51C68;font-weight:700">Editorial de estilo</span>
+      <h2 id="ed" style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(30px,3.4vw,46px);line-height:1.1;color:#1B2348;text-wrap:balance">Um detalhe muda o visual inteiro.</h2>
+      <p style="margin:0;font-size:16px;line-height:1.7;color:#4A4A4A">O colar riviera sobre o listrado azul e o toque turquesa no anel e nos brincos: poucos elementos, um visual completo.</p>
+      <sc-for list="{{ ed.items }}" as="ei" hint-placeholder-count="1">
+        <a href="{{ ei.href }}" style="display:flex;justify-content:space-between;gap:12px;padding:14px 0;border-top:1px solid #D9D1C2;border-bottom:1px solid #D9D1C2;color:#252525;text-decoration:none" style-hover="color:#A51C68"><span>{{ ei.name }}</span><span style="font-weight:600;color:#1B2348">{{ ei.price }}</span></a>
+      </sc-for>
+      <a href="{{ ed.href }}" style="min-height:50px;padding:0 26px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;cursor:pointer;white-space:nowrap;align-self:flex-start;background:#1B2348;color:#fff" style-hover="background:#141A38;color:#fff">Explorar esta seleção</a>
+    </div>
+  </section>
+
+  <section aria-labelledby="gf" style="max-width:1320px;margin:0 auto;padding:clamp(64px,8vw,112px) clamp(16px,4vw,48px) 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(28px,5vw,80px);align-items:center">
+    <div style="display:flex;flex-direction:column;gap:18px;max-width:460px;justify-self:end">
+      <span style="font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:#A51C68;font-weight:700">Presentes</span>
+      <h2 id="gf" style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(30px,3.4vw,46px);line-height:1.1;color:#1B2348;text-wrap:balance">Um detalhe para tornar o momento especial.</h2>
+      <p style="margin:0;font-size:16px;line-height:1.7;color:#4A4A4A">Conte para quem é e a ocasião: a equipe da loja sugere opções dentro do valor que você imagina.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <a href="{{ listHref }}" style="min-height:50px;padding:0 26px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;cursor:pointer;white-space:nowrap;border:1px solid #1B2348;color:#1B2348" style-hover="background:#ECE6DA">Ver peças</a>
+        <button onClick="{{ helpGift }}" style="min-height:50px;padding:0 26px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;cursor:pointer;white-space:nowrap;border:0;background:#1B2348;color:#fff" style-hover="background:#141A38">Receba ajuda para escolher</button>
+      </div>
+    </div>
+    <div style="position:relative;aspect-ratio:4/5;max-width:540px;width:100%;background:repeating-linear-gradient(135deg,#ECE6DA 0 14px,#F3EFE7 14px 28px)"><span style="position:absolute;left:12px;bottom:12px;font-family:ui-monospace,Menlo,monospace;font-size:11px;background:#F7F4EE;padding:4px 8px">foto · presentes.jpg (a enviar)</span></div>
+  </section>
+
+  <section id="atendimento" aria-labelledby="at" style="max-width:1320px;margin:0 auto;padding:clamp(72px,9vw,120px) clamp(16px,4vw,48px) 0">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(28px,5vw,72px);align-items:start">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <h2 id="at" style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(30px,3.4vw,46px);color:#1B2348">Atendimento de pessoa para pessoa.</h2>
+        <p style="margin:0;font-size:16px;line-height:1.7;color:#4A4A4A">Conte o que procura e a equipe da loja selecionada ajuda você a escolher. Visitas dependem de confirmação.</p>
+      </div>
+      <form noValidate="{{ true }}" onSubmit="{{ vf.submit }}" style="display:flex;flex-direction:column;gap:14px;background:#EFEAE0;padding:clamp(20px,3vw,32px)">
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:14px">Nome *<input id="v-nome" value="{{ vf.nome }}" onChange="{{ vf.setNome }}" autoComplete="name" style="height:46px;border:1px solid #CFC6B5;background:#FBF9F5;padding:0 12px;font-size:16px"></label>
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:14px">Telefone ou e-mail *<input id="v-contato" value="{{ vf.contato }}" onChange="{{ vf.setContato }}" style="height:46px;border:1px solid #CFC6B5;background:#FBF9F5;padding:0 12px;font-size:16px"></label>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:12px">
+          <label style="display:flex;flex-direction:column;gap:6px;font-size:14px">Loja<select value="{{ vf.loja }}" onChange="{{ vf.setLoja }}" style="height:46px;border:1px solid #CFC6B5;background:#FBF9F5;padding:0 8px;font-size:16px"><sc-for list="{{ storeOpts }}" as="so" hint-placeholder-count="2"><option value="{{ so.id }}">{{ so.name }}</option></sc-for></select></label>
+          <label style="display:flex;flex-direction:column;gap:6px;font-size:14px">Horário<select value="{{ vf.hora }}" onChange="{{ vf.setHora }}" style="height:46px;border:1px solid #CFC6B5;background:#FBF9F5;padding:0 8px;font-size:16px"><option value="">Sem preferência</option><option value="Manhã">Manhã</option><option value="Tarde">Tarde</option></select></label>
+        </div>
+        <sc-if value="{{ vf.hasErr }}" hint-placeholder-val="{{ false }}"><p role="alert" style="margin:0;font-size:14px;color:#A51C68;font-weight:600">{{ vf.err }}</p></sc-if>
+        <button type="submit" style="min-height:52px;border:0;background:#1B2348;color:#fff;font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;cursor:pointer">Solicitar visita</button>
+      </form>
+    </div>
+  </section>
+
+  <section id="lojas" aria-labelledby="lj" style="max-width:1320px;margin:0 auto;padding:clamp(72px,9vw,120px) clamp(16px,4vw,48px) clamp(64px,8vw,104px)">
+    <h2 id="lj" style="margin:0 0 8px;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(32px,3.6vw,48px);color:#1B2348">Nossas lojas</h2>
+    <p style="margin:0 0 32px;font-size:16px;color:#4A4A4A">Cada loja tem catálogo, estoque e atendimento próprios.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(20px,3vw,32px)">
+      <sc-for list="{{ storeCards }}" as="sc" hint-placeholder-count="2">
+        <article style="display:flex;flex-direction:column;gap:14px;border-top:2px solid {{ sc.accent }};padding-top:18px">
+          <div style="position:relative;aspect-ratio:4/3;background:repeating-linear-gradient(135deg,#ECE6DA 0 14px,#F3EFE7 14px 28px)"><span style="position:absolute;left:12px;bottom:12px;font-family:ui-monospace,Menlo,monospace;font-size:11px;background:#F7F4EE;padding:4px 8px">foto · {{ sc.file }}</span></div>
+          <h3 style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:26px;color:#1B2348">{{ sc.name }}</h3>
+          <p style="margin:0;font-size:15px;line-height:1.6;color:#4A4A4A">{{ sc.intro }}</p>
+          <span style="font-size:14px;color:#4A4A4A">{{ sc.addr }}</span>
+          <span style="font-size:14px;color:#4A4A4A">{{ sc.contact }}</span>
+          <a href="{{ sc.href }}" style="align-self:flex-start;min-height:48px;padding:0 22px;display:inline-flex;align-items:center;border:1px solid #1B2348;text-decoration:none;font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:600">{{ sc.cta }}</a>
+        </article>
+      </sc-for>
+    </div>
+  </section>
+  <section aria-label="Atendimento rápido" style="border-top:1px solid #E2DCD0;background:#FBF9F5">
+    <div style="max-width:1320px;margin:0 auto;padding:28px clamp(16px,4vw,48px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px">
+      <button onClick="{{ helpBuy }}" style="min-height:60px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 20px;border:1px solid #D9D1C2;background:#F7F4EE;color:#1B2348;text-decoration:none;font-size:15px;font-weight:600;cursor:pointer;text-align:left" style-hover="border-color:#1B2348">Compre com uma consultora<span aria-hidden="true">›</span></button>
+      <a href="{{ homeHref }}" onClick="{{ goAt }}" style="min-height:60px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 20px;border:1px solid #D9D1C2;background:#F7F4EE;color:#1B2348;text-decoration:none;font-size:15px;font-weight:600;cursor:pointer;text-align:left" style-hover="border-color:#1B2348">Solicite uma visita<span aria-hidden="true">›</span></a>
+      <button onClick="{{ openSwitch }}" style="min-height:60px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 20px;border:1px solid #D9D1C2;background:#F7F4EE;color:#1B2348;text-decoration:none;font-size:15px;font-weight:600;cursor:pointer;text-align:left" style-hover="border-color:#1B2348">Trocar de loja<span aria-hidden="true">›</span></button>
+    </div>
+  </section>
+</sc-if>
+
+<sc-if value="{{ isList }}" hint-placeholder-val="{{ false }}">
+  <section style="max-width:1320px;margin:0 auto;padding:clamp(28px,4vw,48px) clamp(16px,4vw,48px) clamp(64px,8vw,96px)">
+    <span style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:{{ store.accent }};font-weight:700">{{ list.kicker }}</span>
+    <h1 style="margin:8px 0 24px;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(36px,4.4vw,60px);color:#1B2348">{{ list.title }}</h1>
+    <sc-if value="{{ list.filters }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;padding:16px 0;border-top:1px solid #E2DCD0;border-bottom:1px solid #E2DCD0;margin-bottom:20px">
+        <label style="display:flex;flex-direction:column;gap:4px;font-size:12px;flex:1 1 220px;max-width:360px">Buscar<input id="cc-q" type="search" value="{{ flt.q }}" onChange="{{ h.q }}" placeholder="Nome, marca ou categoria" style="height:44px;border:1px solid #CFC6B5;background:#FBF9F5;padding:0 12px;font-size:16px"></label>
+        <label style="display:flex;flex-direction:column;gap:4px;font-size:12px">Categoria<select value="{{ flt.cat }}" onChange="{{ h.cat }}" style="height:44px;border:1px solid #CFC6B5;background:#FBF9F5;padding:0 8px;font-size:15px"><option value="">Todas</option><sc-for list="{{ catOpts }}" as="o" hint-placeholder-count="4"><option value="{{ o }}">{{ o }}</option></sc-for></select></label>
+        <label style="display:flex;flex-direction:column;gap:4px;font-size:12px">Marca<select value="{{ flt.brand }}" onChange="{{ h.brand }}" style="height:44px;border:1px solid #CFC6B5;background:#FBF9F5;padding:0 8px;font-size:15px"><option value="">Todas</option><sc-for list="{{ brandOpts }}" as="o" hint-placeholder-count="3"><option value="{{ o }}">{{ o }}</option></sc-for></select></label>
+        <label style="display:flex;flex-direction:column;gap:4px;font-size:12px">Preço<select value="{{ flt.price }}" onChange="{{ h.price }}" style="height:44px;border:1px solid #CFC6B5;background:#FBF9F5;padding:0 8px;font-size:15px"><option value="">Qualquer</option><option value="a">Até R$ 300</option><option value="b">R$ 300 a R$ 800</option><option value="c">Acima de R$ 800</option></select></label>
+        <label style="display:flex;flex-direction:column;gap:4px;font-size:12px">Ordenar<select value="{{ flt.sort }}" onChange="{{ h.sort }}" style="height:44px;border:1px solid #CFC6B5;background:#FBF9F5;padding:0 8px;font-size:15px"><option value="novo">Novidades</option><option value="asc">Menor preço</option><option value="desc">Maior preço</option></select></label>
+        <label style="display:flex;align-items:center;gap:8px;min-height:44px;font-size:14px;cursor:pointer"><input type="checkbox" checked="{{ flt.avail }}" onChange="{{ h.avail }}" style="width:18px;height:18px;accent-color:#1B2348">Disponível nesta loja</label>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:24px">
+        <span aria-live="polite" style="font-size:14px;font-weight:600;margin-right:6px">{{ list.count }}</span>
+        <sc-for list="{{ chips }}" as="ch" hint-placeholder-count="0"><button onClick="{{ ch.on }}" aria-label="{{ ch.aria }}" style="height:34px;padding:0 12px;border:1px solid #1B2348;background:transparent;font-size:13px;cursor:pointer">{{ ch.lab }} ×</button></sc-for>
+        <sc-if value="{{ flt.any }}" hint-placeholder-val="{{ false }}"><button onClick="{{ h.clear }}" style="height:34px;border:0;background:none;text-decoration:underline;cursor:pointer;font-weight:600">Limpar</button></sc-if>
+      </div>
+    </sc-if>
+    <sc-if value="{{ list.empty }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:56px 24px;text-align:center;background:#EFEAE0;display:flex;flex-direction:column;align-items:center;gap:12px">
+        <p style="margin:0;font-family:'Bodoni Moda',serif;font-size:26px;color:#1B2348">{{ list.emptyT }}</p>
+        <button onClick="{{ list.emptyOn }}" style="min-height:48px;padding:0 22px;border:0;background:#1B2348;color:#fff;font-weight:600;cursor:pointer">{{ list.emptyB }}</button>
+      </div>
+    </sc-if>
+    <div style="display:grid;grid-template-columns:repeat({{ cols }},minmax(0,1fr));gap:40px clamp(12px,2vw,24px)">
+      <sc-for list="{{ listCards }}" as="c" hint-placeholder-count="0">
+        <article style="display:flex;flex-direction:column;gap:8px;min-width:0">
+          <div style="position:relative;aspect-ratio:3/4;overflow:hidden;background:#1E1E1E">
+            <a href="{{ c.href }}" aria-label="{{ c.name }}" style="position:absolute;inset:0"><img src="{{ c.img }}" alt="{{ c.alt }}" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:{{ c.pos }};transition:transform .5s ease" style-hover="transform:scale(1.03)"></a>
+            <button onClick="{{ c.fav }}" aria-pressed="{{ c.isFav }}" aria-label="{{ c.favLab }}" style="position:absolute;top:8px;right:8px;width:44px;height:44px;border:0;background:rgba(247,244,238,.92);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#A51C68"><svg width="18" height="18" viewBox="0 0 24 24" fill="{{ c.heart }}" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"></path></svg></button>
+            <sc-if value="{{ c.out }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:0;bottom:0;background:#F7F4EE;color:#252525;font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:7px 10px">Indisponível nesta loja</span></sc-if>
+          </div>
+          <span style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#6A6A6A;margin-top:6px;min-height:14px">{{ c.brand }}</span>
+          <a href="{{ c.href }}" style="font-size:15px;line-height:1.35;color:#252525;text-decoration:none" style-hover="color:#A51C68">{{ c.name }}</a>
+          <span style="font-size:15px;font-weight:600;color:#1B2348">{{ c.price }}</span>
+        </article>
+      </sc-for>
+    </div>
+  </section>
+</sc-if>
+
+<sc-if value="{{ isProduct }}" hint-placeholder-val="{{ false }}">
+  <section style="max-width:1320px;margin:0 auto;padding:clamp(16px,3vw,32px) clamp(16px,4vw,48px) clamp(64px,8vw,96px)">
+    <a href="{{ listHref }}" style="display:inline-flex;align-items:center;min-height:44px;font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;text-decoration:none">← Coleção {{ store.short }}</a>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(28px,4vw,72px);margin-top:12px;align-items:start">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="width:100%;max-width:calc(72vh * .75);margin:0 auto;aspect-ratio:3/4;overflow:hidden;background:#1E1E1E"><div role="img" aria-label="{{ pd.alt }}" style="width:100%;height:100%;background-image:{{ pd.mBg }};background-size:cover;background-position:{{ pd.mPos }}"></div></div>
+        <sc-if value="{{ pd.multi }}" hint-placeholder-val="{{ false }}">
+          <div role="group" aria-label="Fotos" style="display:flex;gap:10px;justify-content:center">
+            <sc-for list="{{ pd.gal }}" as="gi" hint-placeholder-count="2"><button onClick="{{ gi.on }}" aria-label="{{ gi.lab }}" aria-pressed="{{ gi.sel }}" style="width:64px;aspect-ratio:3/4;padding:0;border:2px solid {{ gi.bd }};background:#1E1E1E;overflow:hidden;cursor:pointer"><span aria-hidden="true" style="display:block;width:100%;height:100%;background-image:{{ gi.bg }};background-size:cover;background-position:{{ gi.pos }}"></span></button></sc-for>
+          </div>
+        </sc-if>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:20px;max-width:500px">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#6A6A6A">{{ pd.brand }}</span>
+          <h1 style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(30px,3.4vw,44px);line-height:1.12;color:#1B2348">{{ pd.name }}</h1>
+          <span style="font-size:20px;font-weight:600;color:#1B2348">{{ pd.price }}</span>
+          <span style="font-size:12px;color:#6A6A6A">Código {{ pd.sku }} · preço e estoque demonstrativos</span>
+        </div>
+        <p style="margin:0;font-size:16px;line-height:1.7;color:#4A4A4A">{{ pd.desc }}</p>
+        <sc-if value="{{ pd.hasVars }}" hint-placeholder-val="{{ false }}">
+          <div role="radiogroup" aria-label="Variação" style="display:flex;gap:8px;flex-wrap:wrap"><sc-for list="{{ pd.vars }}" as="pv" hint-placeholder-count="2"><button role="radio" aria-checked="{{ pv.sel }}" onClick="{{ pv.on }}" style="min-height:46px;padding:0 16px;border:1px solid {{ pv.bd }};background:{{ pv.bg }};color:{{ pv.fg }};cursor:pointer">{{ pv.v }}</button></sc-for></div>
+        </sc-if>
+        <p aria-live="polite" style="margin:0;font-size:15px;font-weight:600;color:{{ pd.tone }}">{{ pd.stock }}</p>
+        <sc-if value="{{ pd.hasOther }}" hint-placeholder-val="{{ false }}"><a href="{{ pd.otherHref }}" style="font-size:14px;font-weight:600;color:#A51C68">{{ pd.otherLab }}</a></sc-if>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <button onClick="{{ pd.add }}" disabled="{{ pd.dis }}" style="min-height:56px;border:0;background:{{ pd.addBg }};color:{{ pd.addFg }};font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;cursor:{{ pd.cur }}">{{ pd.addLab }}</button>
+          <div style="display:flex;gap:10px">
+            <button onClick="{{ pd.ask }}" style="flex:1;min-height:52px;border:1px solid #1B2348;background:transparent;font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;cursor:pointer" style-hover="background:#ECE6DA">Consultar esta peça</button>
+            <button onClick="{{ pd.fav }}" aria-pressed="{{ pd.isFav }}" aria-label="{{ pd.favLab }}" style="width:52px;min-height:52px;border:1px solid #1B2348;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#A51C68"><svg width="20" height="20" viewBox="0 0 24 24" fill="{{ pd.heart }}" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"></path></svg></button>
+          </div>
+        </div>
+        <dl style="margin:0;border-top:1px solid #E2DCD0;display:grid;grid-template-columns:auto 1fr;gap:0 20px;font-size:14px">
+          <dt style="padding:12px 0;border-bottom:1px solid #E2DCD0;font-weight:600">Material e acabamento</dt><dd style="margin:0;padding:12px 0;border-bottom:1px solid #E2DCD0;color:#4A4A4A">A confirmar pela loja</dd>
+          <dt style="padding:12px 0;border-bottom:1px solid #E2DCD0;font-weight:600">Dimensões</dt><dd style="margin:0;padding:12px 0;border-bottom:1px solid #E2DCD0;color:#4A4A4A">A confirmar pela loja</dd>
+          <dt style="padding:12px 0;border-bottom:1px solid #E2DCD0;font-weight:600">Cuidados</dt><dd style="margin:0;padding:12px 0;border-bottom:1px solid #E2DCD0;color:#4A4A4A">A serem informados pela loja</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+</sc-if>
+
+<sc-if value="{{ isBag }}" hint-placeholder-val="{{ false }}">
+  <section style="max-width:1320px;margin:0 auto;padding:clamp(28px,4vw,48px) clamp(16px,4vw,48px) clamp(64px,8vw,96px)">
+    <h1 style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(36px,4.4vw,60px);color:#1B2348">Sacola</h1>
+    <p style="margin:6px 0 24px;font-size:15px">Loja: <strong style="color:{{ store.accent }}">{{ store.name }}</strong> · cada loja tem sua própria sacola.</p>
+    <sc-if value="{{ bag.empty }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:56px 24px;text-align:center;background:#EFEAE0;display:flex;flex-direction:column;align-items:center;gap:12px"><p style="margin:0;font-family:'Bodoni Moda',serif;font-size:26px;color:#1B2348">A sacola desta loja está vazia.</p><span style="font-size:14px">{{ bag.otherNote }}</span><a href="{{ listHref }}" style="min-height:48px;padding:0 22px;display:inline-flex;align-items:center;background:#1B2348;color:#fff;text-decoration:none;font-weight:600">Explorar a coleção</a></div>
+    </sc-if>
+    <sc-if value="{{ bag.has }}" hint-placeholder-val="{{ false }}">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:clamp(28px,4vw,56px);align-items:start">
+        <ul style="list-style:none;margin:0;padding:0;border-top:1px solid #E2DCD0">
+          <sc-for list="{{ bag.lines }}" as="ln" hint-placeholder-count="1">
+            <li style="display:flex;gap:16px;padding:18px 0;border-bottom:1px solid #E2DCD0">
+              <a href="{{ ln.href }}" style="flex:0 0 84px;aspect-ratio:3/4;overflow:hidden;background:#1E1E1E;display:block"><span role="img" aria-label="{{ ln.name }}" style="display:block;width:100%;height:100%;background-image:{{ ln.bg }};background-size:cover;background-position:{{ ln.pos }}"></span></a>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
+                <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><a href="{{ ln.href }}" style="font-size:15px;font-weight:600;text-decoration:none;color:#252525">{{ ln.name }}</a><span style="font-weight:600">{{ ln.tot }}</span></div>
+                <span style="font-size:13px;color:#6A6A6A">{{ ln.sku }} · {{ ln.v }} · {{ ln.unit }} cada</span>
+                <div style="display:flex;align-items:center;gap:14px;margin-top:6px">
+                  <div role="group" aria-label="{{ ln.qLab }}" style="display:flex;align-items:center;border:1px solid #CFC6B5"><button onClick="{{ ln.dec }}" disabled="{{ ln.decDis }}" aria-label="Diminuir" style="width:44px;height:42px;border:0;background:none;cursor:pointer;opacity:{{ ln.decOp }}">−</button><span aria-live="polite" style="min-width:24px;text-align:center;font-weight:600">{{ ln.q }}</span><button onClick="{{ ln.inc }}" disabled="{{ ln.incDis }}" aria-label="Aumentar" style="width:44px;height:42px;border:0;background:none;cursor:pointer;opacity:{{ ln.incOp }}">+</button></div>
+                  <button onClick="{{ ln.rm }}" style="min-height:44px;border:0;background:none;text-decoration:underline;cursor:pointer;font-size:14px;padding:0">Remover</button>
+                </div>
+                <sc-if value="{{ ln.hasWarn }}" hint-placeholder-val="{{ false }}"><span style="font-size:13px;color:#A51C68;font-weight:600">{{ ln.warn }}</span></sc-if>
+              </div>
+            </li>
+          </sc-for>
+        </ul>
+        <div style="background:#EFEAE0;padding:clamp(20px,3vw,32px);display:flex;flex-direction:column;gap:14px;position:sticky;top:110px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><span>Subtotal ({{ bag.n }})</span><span style="font-family:'Bodoni Moda',serif;font-size:30px;color:#1B2348">{{ bag.sub }}</span></div>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:#4A4A4A">Disponibilidade, frete e pagamento são confirmados no atendimento da {{ store.short }}. Nada é reservado ao adicionar à sacola.</p>
+          <sc-if value="{{ bag.hasErr }}" hint-placeholder-val="{{ false }}"><p role="alert" style="margin:0;font-size:14px;color:#A51C68;font-weight:600">{{ bag.err }}</p></sc-if>
+          <button onClick="{{ bag.send }}" style="min-height:56px;border:0;background:#1B2348;color:#fff;font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;cursor:pointer">Solicitar pedido pelo WhatsApp</button>
+        </div>
+      </div>
+    </sc-if>
+  </section>
+</sc-if>
+</main>
+
+<footer style="background:#1B2348;color:#E9E6F0">
+  <div style="max-width:1320px;margin:0 auto;padding:clamp(48px,6vw,72px) clamp(16px,4vw,48px) 28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:32px;font-size:14px">
+    <div style="display:flex;flex-direction:column;gap:8px"><span style="display:flex;flex-direction:column;align-items:flex-start;line-height:1"><span style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:44px;line-height:.9;background:linear-gradient(100deg,#D8BE92 0%,#E2A6BC 100%);-webkit-background-clip:text;background-clip:text;color:transparent">{{ store.logoTop }}</span><span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.38em;margin-top:4px;color:#E4D6BC">{{ store.logoSub }}</span></span><button onClick="{{ openSwitch }}" style="align-self:flex-start;border:0;background:none;color:#E4D6BC;text-decoration:underline;cursor:pointer;padding:0;min-height:36px">Trocar de loja</button></div>
+    <div style="display:flex;flex-direction:column;gap:8px"><span style="font-weight:700;color:#fff">Contato</span><span>{{ footWa }}</span><a href="{{ igUrl }}" target="_blank" rel="noopener" style="color:#E9E6F0">{{ footIg }}</a><span>{{ footAddr }}</span></div>
+    <div style="display:flex;flex-direction:column;gap:2px"><span style="font-weight:700;color:#fff;margin-bottom:6px">Informações</span><sc-for list="{{ policies }}" as="pl" hint-placeholder-count="4"><button onClick="{{ pl.on }}" style="align-self:flex-start;border:0;background:none;color:#E9E6F0;padding:0;min-height:34px;cursor:pointer;text-align:left" style-hover="text-decoration:underline">{{ pl.t }}</button></sc-for></div>
+  </div>
+  <div style="max-width:1320px;margin:0 auto;padding:0 clamp(16px,4vw,48px) 24px;font-size:12px;color:#B9BCD0">Protótipo · produtos, preços e disponibilidade de exemplo, não constituem oferta.</div>
+</footer>
+
+<sc-if value="{{ switchOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ swBack }}" style="position:fixed;inset:0;z-index:80;background:rgba(27,35,72,.55);display:flex;align-items:center;justify-content:center;padding:16px">
+    <div role="dialog" aria-modal="true" aria-labelledby="sw-t" style="background:#F7F4EE;max-width:820px;width:100%;max-height:92vh;overflow:auto;padding:clamp(20px,4vw,40px);display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><h2 id="sw-t" style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:30px;color:#1B2348">Nossas lojas</h2><button onClick="{{ closeSwitch }}" autoFocus="{{ true }}" aria-label="Fechar" style="width:44px;height:44px;border:0;background:none;cursor:pointer;font-size:22px">×</button></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px">
+        <sc-for list="{{ storeCards }}" as="sc" hint-placeholder-count="2">
+          <article style="display:flex;flex-direction:column;gap:10px;border-top:2px solid {{ sc.accent }};padding-top:14px">
+            <div style="position:relative;aspect-ratio:16/9;background:repeating-linear-gradient(135deg,#ECE6DA 0 14px,#F3EFE7 14px 28px)"><span style="position:absolute;left:10px;bottom:10px;font-family:ui-monospace,Menlo,monospace;font-size:11px;background:#F7F4EE;padding:3px 7px">foto · {{ sc.file }}</span></div>
+            <h3 style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:24px;color:#1B2348">{{ sc.name }}</h3>
+            <span style="font-size:13px;color:#4A4A4A">{{ sc.addr }}</span>
+            <p style="margin:0;font-size:14px;line-height:1.6;color:#4A4A4A">{{ sc.intro }}</p>
+            <a href="{{ sc.href }}" style="align-self:flex-start;min-height:48px;padding:0 20px;display:inline-flex;align-items:center;background:{{ sc.btnBg }};color:{{ sc.btnFg }};border:1px solid #1B2348;text-decoration:none;font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:600">{{ sc.cta }}</a>
+          </article>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+  <div role="dialog" aria-modal="true" aria-label="Menu" style="position:fixed;inset:0;z-index:75;background:#F7F4EE;padding:12px 20px 28px;display:flex;flex-direction:column;overflow:auto">
+    <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px">Loja: <strong>{{ store.short }}</strong></span><button onClick="{{ closeMenu }}" autoFocus="{{ true }}" aria-label="Fechar menu" style="width:44px;height:44px;border:0;background:none;cursor:pointer;font-size:24px">×</button></div>
+    <nav aria-label="Principal" style="display:flex;flex-direction:column;margin-top:16px">
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="6"><a href="{{ n.href }}" onClick="{{ n.on }}" style="font-family:'Bodoni Moda',serif;font-size:28px;text-decoration:none;color:#1B2348;padding:12px 0;border-bottom:1px solid #E2DCD0">{{ n.lab }}</a></sc-for>
+    </nav>
+    <button onClick="{{ openSwitch }}" style="margin-top:24px;min-height:52px;border:1px solid #1B2348;background:transparent;font-weight:600;cursor:pointer">Trocar loja</button>
+  </div>
+</sc-if>
+
+<sc-if value="{{ hasWa }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ waBack }}" style="position:fixed;inset:0;z-index:85;background:rgba(27,35,72,.55);display:flex;align-items:center;justify-content:center;padding:16px">
+    <div role="dialog" aria-modal="true" aria-labelledby="wa-t" style="background:#F7F4EE;max-width:520px;width:100%;max-height:92vh;overflow:auto;padding:clamp(20px,4vw,32px);display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;justify-content:space-between;gap:12px"><h2 id="wa-t" style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:26px;color:#1B2348">{{ wa.title }}</h2><button onClick="{{ closeWa }}" autoFocus="{{ true }}" aria-label="Fechar" style="width:44px;height:44px;border:0;background:none;cursor:pointer;font-size:22px">×</button></div>
+      <span style="font-size:13px;font-weight:600">Para: {{ wa.to }}</span>
+      <div style="white-space:pre-wrap;font-size:14px;line-height:1.55;background:#fff;border:1px solid #E2DCD0;padding:14px;max-height:44vh;overflow:auto">{{ wa.text }}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px">
+        <sc-if value="{{ wa.hasUrl }}" hint-placeholder-val="{{ false }}"><a href="{{ wa.url }}" target="_blank" rel="noopener" style="flex:1 1 200px;min-height:50px;display:flex;align-items:center;justify-content:center;background:#1B2348;color:#fff;text-decoration:none;font-weight:600">Abrir no WhatsApp</a></sc-if>
+        <button onClick="{{ copyWa }}" style="flex:1 1 160px;min-height:50px;border:1px solid #1B2348;background:transparent;font-weight:600;cursor:pointer">{{ wa.copyLab }}</button>
+      </div>
+      <p style="margin:0;font-size:13px;line-height:1.55;color:#4A4A4A">{{ wa.note }}</p>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ hasInfo }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ infoBack }}" style="position:fixed;inset:0;z-index:85;background:rgba(27,35,72,.55);display:flex;align-items:center;justify-content:center;padding:16px">
+    <div role="dialog" aria-modal="true" aria-labelledby="in-t" style="background:#F7F4EE;max-width:460px;width:100%;padding:28px;display:flex;flex-direction:column;gap:14px"><h2 id="in-t" style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:26px;color:#1B2348">{{ info.t }}</h2><p style="margin:0;font-size:15px;line-height:1.6">Conteúdo a ser configurado pela loja. Nenhuma política comercial foi definida neste protótipo.</p><button onClick="{{ closeInfo }}" autoFocus="{{ true }}" style="align-self:flex-start;min-height:46px;padding:0 22px;border:0;background:#1B2348;color:#fff;font-weight:600;cursor:pointer">Fechar</button></div>
+  </div>
+</sc-if>
+
+<div aria-live="polite" style="position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:90;pointer-events:none;width:max-content;max-width:calc(100vw - 32px)"><sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}"><div style="background:#252525;color:#fff;padding:14px 20px;font-size:14px">{{ toast }}</div></sc-if></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  rowRef = React.createRef();
+  checkSlides() { const C = window.CC_CONFIG; if (!C || !C.heroSlides || this.slidesChecked) return; this.slidesChecked = true; C.heroSlides.forEach(s => { const i = new Image(); i.onload = () => this.setState(st => ({ imgOk: Object.assign({}, st.imgOk, { [s.img]: true }) })); i.onerror = () => this.setState(st => ({ imgOk: Object.assign({}, st.imgOk, { [s.img]: false }) })); i.src = s.img; }); }
+  state = { hi: 0, imgOk: {}, mega: false, hq: '', tab: 'cat', ready: false, sid: 'cec-joias', route: 'home', pid: null, w: 1280, menu: false, sw: false, favs: [], bags: {}, q: '', cat: '', brand: '', price: '', avail: false, sort: 'novo', v: '', gal: 0, wa: null, copied: false, info: null, toast: '', bErr: '', vn: '', vc: '', vl: '', vh: '', vErr: '' };
+  componentDidMount() {
+    this.onR = () => this.setState({ w: window.innerWidth }); window.addEventListener('resize', this.onR); this.onR(); this.onK = e => { if (e.key === 'Escape' && this.state.mega) this.setState({ mega: false }); }; window.addEventListener('keydown', this.onK);
+    this.onH = () => this.fromHash(); window.addEventListener('hashchange', this.onH);
+    this.onK = e => { if (e.key === 'Escape') this.setState({ wa: null, info: null, menu: false, sw: false }); }; window.addEventListener('keydown', this.onK);
+    const boot = () => { if (!window.CC_CONFIG) { this.bt = setTimeout(boot, 40); return; } let favs = [], bags = {}; try { favs = JSON.parse(localStorage.getItem('cc_favs')) || []; bags = JSON.parse(localStorage.getItem('cc_bags')) || {}; } catch (e) { } this.setState({ ready: true, favs, bags }, () => this.fromHash()); };
+    boot();
+  }
+  componentWillUnmount() { clearTimeout(this.bt); clearTimeout(this.tt); window.removeEventListener('resize', this.onR); window.removeEventListener('hashchange', this.onH); window.removeEventListener('keydown', this.onK); }
+  C() { return window.CC_CONFIG; }
+  ST(id) { return this.C().stores.find(s => s.id === id) || this.C().stores[0]; }
+  other() { return this.C().stores.find(s => s.id !== this.state.sid); }
+  P(id) { return this.C().products.find(p => p.id === id); }
+  qty(p, sid, v) { const s = p.stock[sid] || {}; return s[v] || 0; }
+  tot(p, sid) { return Object.values(p.stock[sid] || {}).reduce((a, n) => a + n, 0); }
+  bag(sid) { return this.state.bags[sid || this.state.sid] || []; }
+  money(n) { return n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
+  norm(t) { return String(t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+  base(sid) { return '#/lojas/' + (sid || this.state.sid); }
+  plink(p) { return location.href.split('#')[0] + this.base() + '/produto/' + p.id; }
+  save(favs, bags) { try { localStorage.setItem('cc_favs', JSON.stringify(favs)); localStorage.setItem('cc_bags', JSON.stringify(bags)); } catch (e) { } }
+  toast(t) { clearTimeout(this.tt); this.setState({ toast: t }); this.tt = setTimeout(() => this.setState({ toast: '' }), 3200); }
+  setBag(b) { const bags = Object.assign({}, this.state.bags, { [this.state.sid]: b }); this.save(this.state.favs, bags); this.setState({ bags }); }
+  toggleFav(id) { const on = !this.state.favs.includes(id), f = on ? this.state.favs.concat(id) : this.state.favs.filter(x => x !== id); this.save(f, this.state.bags); this.setState({ favs: f }); this.toast(on ? 'Salvo nos favoritos' : 'Removido dos favoritos'); }
+  fromHash() {
+    const h = (location.hash || '').replace(/^#\/?/, '').split('/');
+    let sid = this.state.sid, route = 'home', pid = null;
+    if (h[0] === 'favoritos') route = 'favs';
+    else if (h[0] === 'lojas' && this.C().stores.some(s => s.id === h[1])) { sid = h[1]; route = { '': 'home', colecao: 'list', produto: 'product', sacola: 'bag' }[h[2] || ''] || 'home'; if (route === 'product') { pid = this.P(h[3]) ? h[3] : null; if (!pid) route = 'list'; } }
+    const prev = this.state.sid, up = { sid, route, pid, menu: false, sw: false };
+    if (pid && pid !== this.state.pid) Object.assign(up, { v: this.P(pid).variants.length === 1 ? this.P(pid).variants[0] : '', gal: 0 });
+    if (sid !== prev) up.vl = sid;
+    this.setState(up, () => { window.scrollTo(0, 0); if (sid !== prev && this.bag(prev).length) this.toast('Os itens da sacola da ' + this.ST(prev).short + ' continuam salvos.'); if (this.fs) { this.fs = false; setTimeout(() => { const e = document.getElementById('cc-q'); if (e) e.focus(); }, 60); } if (this.anchor) { const a = this.anchor; this.anchor = null; setTimeout(() => { const e = document.getElementById(a); if (e) window.scrollTo({ top: e.getBoundingClientRect().top + window.scrollY - 90 }); }, 80); } });
+  }
+  nav(path) { const t = '#/' + path; if (location.hash === t) this.fromHash(); else location.hash = t; }
+  toAnchor(id) { if (this.state.route === 'home') { this.setState({ menu: false, sw: false }); const e = document.getElementById(id); if (e) window.scrollTo({ top: e.getBoundingClientRect().top + window.scrollY - 90 }); } else { this.anchor = id; this.nav('lojas/' + this.state.sid); } }
+  openWA(title, text, store) {
+    const s = store || this.ST(this.state.sid), n = s.whatsapp;
+    this.setState({ wa: { title, text, to: s.name + (n ? '' : ' — WhatsApp ainda não configurado'), url: n ? 'https://wa.me/' + n + '?text=' + encodeURIComponent(text) : '', note: n ? 'A mensagem só é enviada quando você confirmar no WhatsApp.' : 'Esta loja ainda não tem WhatsApp configurado. Copie a mensagem para enviar quando o contato for definido.' }, copied: false });
+  }
+  copy() { const t = this.state.wa.text, done = () => this.setState({ copied: true }); const fb = () => { const a = document.createElement('textarea'); a.value = t; document.body.appendChild(a); a.select(); try { document.execCommand('copy'); done(); } catch (e) { } a.remove(); }; if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done, fb); else fb(); }
+  card(p) { const S = this.state, fav = S.favs.includes(p.id); return { name: p.name, brand: p.brand, price: this.money(p.price), href: this.base() + '/produto/' + p.id, img: p.imgs[0][0], pos: p.imgs[0][1], alt: p.name + '. ' + p.desc, out: this.tot(p, S.sid) === 0, isFav: fav, heart: fav ? '#A51C68' : 'none', favLab: (fav ? 'Remover dos favoritos: ' : 'Salvar nos favoritos: ') + p.name, fav: e => { e.preventDefault(); this.toggleFav(p.id); } }; }
+  filtered() {
+    const S = this.state, q = this.norm(S.q.trim()), pr = { a: [0, 300], b: [300, 800], c: [800, 1e9] }[S.price];
+    const L = this.C().products.filter(p => (!q || this.norm(p.name + ' ' + p.brand + ' ' + p.cat).includes(q)) && (!S.cat || p.cat === S.cat) && (!S.brand || p.brand === S.brand) && (!pr || (p.price >= pr[0] && p.price < pr[1])) && (!S.avail || this.tot(p, S.sid) > 0));
+    return L.slice().sort((a, b) => S.sort === 'asc' ? a.price - b.price : S.sort === 'desc' ? b.price - a.price : (b.novo ? 1 : 0) - (a.novo ? 1 : 0));
+  }
+  add(p) {
+    const S = this.state; if (!S.v) { this.toast('Escolha uma variação.'); return; }
+    const q = this.qty(p, S.sid, S.v), b = this.bag().slice(), i = b.findIndex(l => l.id === p.id && l.v === S.v), inb = i >= 0 ? b[i].q : 0;
+    if (q === 0) return; if (inb >= q) { this.toast('Todas as unidades disponíveis já estão na sacola.'); return; }
+    if (i >= 0) b[i] = Object.assign({}, b[i], { q: inb + 1 }); else b.push({ id: p.id, v: S.v, q: 1 });
+    this.setBag(b); this.toast(p.name + ' foi para a sacola da ' + this.ST(S.sid).short);
+  }
+  renderVals() {
+    const S = this.state, C = window.CC_CONFIG, mob = S.w < 900, hMob = S.w < 1080;
+    const base = { mob, desk: !mob, hMob, hDesk: !hMob, menuOpen: S.menu, switchOpen: S.sw, hasToast: !!S.toast, toast: S.toast, headH: mob ? '64px' : '80px', megaIsOpen: S.mega, megaCats: [], megaBrands: [], megaPrices: [], hs: {}, logoSize: mob ? '20px' : '25px', logoSubSize: mob ? '7px' : '8.5px', logoBox: mob ? '52px' : '66px', openMenu: () => this.setState({ menu: true }), closeMenu: () => this.setState({ menu: false }), openSwitch: () => this.setState({ sw: true, menu: false }), closeSwitch: () => this.setState({ sw: false }) };
+    if (!S.ready || !C) return Object.assign(base, { store: {}, isHome: false, isList: false, isProduct: false, isBag: false, hasWa: false, hasInfo: false, navItems: [], storeCards: [], policies: [] });
+    const st = this.ST(S.sid), ot = this.other(), bs = this.base(), r = S.route, isCec = st.id === 'cec-joias';
+    const cats = [...new Set(C.products.map(p => p.cat))], brands = [...new Set(C.products.map(p => p.brand).filter(Boolean))];
+    const goList = f => e => { if (e) e.preventDefault(); this.setState(Object.assign({ q: '', cat: '', brand: '', price: '', avail: false }, f)); this.nav('lojas/' + S.sid + '/colecao'); };
+    const bagN = this.bag().reduce((a, l) => a + l.q, 0), favN = S.favs.length;
+    const v = Object.assign(base, {
+      store: { name: st.name, short: st.short, accent: st.accent, demo: st.demo, logoTop: isCec ? 'C&C' : st.short, logoSub: isCec ? 'JOIAS' : 'A CONFIRMAR' },
+      logoAria: st.name + ' — início', homeHref: bs, listHref: bs + '/colecao', bagHref: bs + '/sacola', otherHref: this.base(ot.id),
+      navItems: [['Novidades', { sort: 'novo' }], ['Relógios', { cat: 'Relógios' }], ['Correntes e pulseiras', { cat: 'Correntes e pulseiras' }], ['Carteiras', { cat: 'Carteiras' }]].filter(([l, f]) => !f.cat || cats.includes(f.cat)).map(([lab, f]) => ({ lab, href: bs + '/colecao', on: goList(f), line: r === 'list' && ((f.cat && S.cat === f.cat) || (!f.cat && !S.cat)) ? '#A51C68' : 'transparent', aria: undefined }))
+        .concat([{ lab: 'Marcas', href: bs, on: e => { e.preventDefault(); this.setState({ tab: 'brand' }); this.toAnchor('mk'); }, line: 'transparent' }, { lab: 'Nossas lojas', href: bs, on: e => { e.preventDefault(); this.setState({ sw: true, menu: false }); }, line: 'transparent' }]),
+      favN, hasFavs: favN > 0, bagN, hasBag: bagN > 0, favAria: 'Favoritos' + (favN ? ', ' + favN : ''), bagAria: 'Sacola da ' + st.short + (bagN ? ', ' + bagN + ' itens' : ', vazia'),
+      goSearch: () => { this.fs = true; this.nav('lojas/' + S.sid + '/colecao'); }, goStores: () => this.toAnchor('lojas'),
+      hs: { val: S.hq, set: e => this.setState({ hq: e.target.value }), submit: e => { e.preventDefault(); const q = S.hq.trim(); this.setState({ hq: '', mega: false }); goList({ q })(); } },
+      megaIsOpen: S.mega, megaLine: S.mega ? '#A51C68' : 'transparent', megaOpen: () => this.setState({ mega: true }), megaClose: () => S.mega && this.setState({ mega: false }), megaToggle: () => this.setState({ mega: !S.mega }),
+      megaCats: cats.map(n => ({ n, count: C.products.filter(p => p.cat === n && this.tot(p, S.sid) > 0).length, on: e => { this.setState({ mega: false }); goList({ cat: n })(e); } })),
+      megaBrands: brands.map(n => ({ n, on: e => { this.setState({ mega: false }); goList({ brand: n })(e); } })),
+      megaPrices: [['Até R$ 300', 'a'], ['R$ 300 a R$ 800', 'b'], ['Acima de R$ 800', 'c']].map(([n, k]) => ({ n, on: e => { this.setState({ mega: false }); goList({ price: k })(e); } })),
+      megaAll: e => { this.setState({ mega: false }); goList({})(e); }, megaBg: 'url("' + C.editorial.img + '")', megaPos: C.editorial.pos, otherShort: ot.short,
+      isHome: r === 'home', isList: r === 'list' || r === 'favs', isProduct: r === 'product', isBag: r === 'bag', cols: mob ? 2 : 4, catCols: mob ? 2 : 4, heroTextOrder: mob ? 2 : 0,
+      storeCards: C.stores.map(s => ({ name: s.name, accent: s.accent, intro: s.intro, file: s.photoFile, addr: [s.city, s.address].filter(Boolean).join(' · ') || 'Endereço a configurar', contact: s.whatsapp ? 'WhatsApp configurado' : 'WhatsApp a configurar', href: this.base(s.id), cta: s.id === S.sid ? 'Você está nesta loja' : 'Acessar esta loja', btnBg: s.id === S.sid ? 'transparent' : '#1B2348', btnFg: s.id === S.sid ? '#1B2348' : '#fff' })),
+      storeOpts: C.stores.map(s => ({ id: s.id, name: s.name })),
+      swBack: e => { if (e.target === e.currentTarget) this.setState({ sw: false }); },
+      igUrl: st.instagram ? 'https://www.instagram.com/' + st.instagram + '/' : bs, footIg: st.instagram ? 'Instagram @' + st.instagram : 'Instagram a configurar', footWa: st.whatsapp ? 'WhatsApp configurado' : 'WhatsApp a configurar', footAddr: st.address || 'Endereço e horários a configurar',
+      policies: ['Entrega e retirada', 'Trocas', 'Privacidade', 'Cuidados com as peças'].map(t => ({ t, on: () => this.setState({ info: { t } }) })),
+      hasInfo: !!S.info, info: S.info || { t: '' }, closeInfo: () => this.setState({ info: null }), infoBack: e => { if (e.target === e.currentTarget) this.setState({ info: null }); },
+      hasWa: !!S.wa, wa: S.wa ? Object.assign({}, S.wa, { hasUrl: !!S.wa.url, copyLab: S.copied ? 'Mensagem copiada' : 'Copiar mensagem' }) : { title: '', text: '', to: '', url: '', hasUrl: false, copyLab: '', note: '' },
+      closeWa: () => this.setState({ wa: null }), waBack: e => { if (e.target === e.currentTarget) this.setState({ wa: null }); }, copyWa: () => this.copy()
+    });
+    if (r === 'home') {
+      const sel = C.products.filter(p => this.tot(p, S.sid) > 0).sort((a, b) => ((b.destaque ? 2 : 0) + (b.novo ? 1 : 0)) - ((a.destaque ? 2 : 0) + (a.novo ? 1 : 0))).slice(0, 8);
+      Object.assign(v, {
+        selCards: sel.map(p => this.card(p)), selEmpty: !sel.length,
+        catTiles: C.categories.filter(c => cats.includes(c.n)).map(c => { const n = C.products.filter(p => p.cat === c.n && this.tot(p, S.sid) > 0).length; return { n: c.n, img: c.img, pos: c.pos, count: n + (n === 1 ? ' peça' : ' peças'), href: bs + '/colecao', on: goList({ cat: c.n }) }; }),
+        ed: { img: C.editorial.img, pos: C.editorial.pos, href: bs + '/colecao', items: C.editorial.items.map(id => this.P(id)).map(p => ({ name: p.name, price: this.money(p.price), href: bs + '/produto/' + p.id })) },
+        brands: brands.map(n => { const k = C.products.filter(p => p.brand === n && this.tot(p, S.sid) > 0).length; return { n, on: goList({ brand: n }), count: k + (k === 1 ? ' peça' : ' peças') }; }),
+        hc: (() => { setTimeout(() => this.checkSlides(), 0); const L = C.heroSlides || [], n = L.length, i = Math.min(S.hi, Math.max(n - 1, 0)), go = d => this.setState({ hi: (i + d + n) % n }), cur = L[i] || {};
+          return { slides: L.map((s, k) => { const ok = S.imgOk[s.img] === true; return { lab: (k + 1) + ' de ' + n, hidden: k !== i, op: k === i ? 1 : 0, vis: k === i ? 'visible' : 'hidden', ok, missing: !ok, bg: 'url("' + s.img + '")', pos: mob ? (s.posMob || s.pos) : s.pos, alt: s.alt, cap: s.cap, file: s.img.split('/').pop() }; }),
+            cap: cur.cap || '', pos: (i + 1) + ' / ' + n, href: cur.pid ? bs + '/produto/' + cur.pid : bs + '/colecao', prev: () => go(-1), next: () => go(1),
+            key: e => { if (e.key === 'ArrowLeft') go(-1); if (e.key === 'ArrowRight') go(1); },
+            ts: e => { this.tx = e.touches[0].clientX; }, te: e => { const dx = e.changedTouches[0].clientX - (this.tx || 0); if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1); } }; })(),
+        heroCols: mob ? 'minmax(0,1fr)' : 'minmax(0,1.1fr) minmax(0,1fr)', heroImgH: mob ? '118vw' : 'min(76vh,640px)', rowCol: mob ? 'calc((100% - 12px) / 1.6)' : 'calc((100% - 72px) / 4)', rowRef: this.rowRef, rowArrows: !mob && sel.length > 4,
+        rowPrev: () => { const el = this.rowRef.current; if (el) el.scrollBy({ left: -el.clientWidth, behavior: 'smooth' }); }, rowNext: () => { const el = this.rowRef.current; if (el) el.scrollBy({ left: el.clientWidth, behavior: 'smooth' }); },
+        tabCat: S.tab === 'cat', tabBrand: S.tab === 'brand', tabCatLine: S.tab === 'cat' ? '#1B2348' : 'transparent', tabBrandLine: S.tab === 'brand' ? '#1B2348' : 'transparent', tabCatColor: S.tab === 'cat' ? '#1B2348' : '#6A6A6A', tabBrandColor: S.tab === 'brand' ? '#1B2348' : '#6A6A6A',
+        setTabCat: () => this.setState({ tab: 'cat' }), setTabBrand: () => this.setState({ tab: 'brand' }),
+        helpBuy: () => this.openWA('Atendimento', 'Olá, ' + st.name + '! Gostaria da ajuda de uma consultora para escolher uma peça.'), goAt: e => { e.preventDefault(); this.toAnchor('atendimento'); },
+        helpGift: () => this.openWA('Ajuda para presentear', 'Olá, ' + st.name + '! Quero ajuda para escolher um presente.\n\nPara quem: \nOcasião: \nFaixa de valor: '),
+        vf: { nome: S.vn, contato: S.vc, loja: S.vl || S.sid, hora: S.vh, hasErr: !!S.vErr, err: S.vErr, setNome: e => this.setState({ vn: e.target.value, vErr: '' }), setContato: e => this.setState({ vc: e.target.value, vErr: '' }), setLoja: e => this.setState({ vl: e.target.value }), setHora: e => this.setState({ vh: e.target.value }),
+          submit: e => { e.preventDefault(); const ok = S.vn.trim().length >= 2 && (S.vc.replace(/\D/g, '').length >= 10 || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(S.vc.trim())); if (!ok) { this.setState({ vErr: 'Informe seu nome e um telefone com DDD ou e-mail válido.' }); return; } const s = this.ST(S.vl || S.sid); this.openWA('Solicitação de visita', 'Olá, ' + s.name + '! Gostaria de agendar uma visita.\n\nNome: ' + S.vn.trim() + '\nContato: ' + S.vc.trim() + '\nHorário de preferência: ' + (S.vh || 'sem preferência') + '\n\nAguardo a confirmação.', s); } }
+      });
+    }
+    if (r === 'list' || r === 'favs') {
+      const favs = r === 'favs', L = favs ? C.products.filter(p => S.favs.includes(p.id)) : this.filtered();
+      const chips = []; if (S.q) chips.push(['“' + S.q + '”', { q: '' }]); if (S.cat) chips.push([S.cat, { cat: '' }]); if (S.brand) chips.push([S.brand, { brand: '' }]); if (S.price) chips.push([{ a: 'Até R$ 300', b: 'R$ 300 a R$ 800', c: 'Acima de R$ 800' }[S.price], { price: '' }]); if (S.avail) chips.push(['Disponível', { avail: false }]);
+      const clear = () => this.setState({ q: '', cat: '', brand: '', price: '', avail: false });
+      Object.assign(v, {
+        list: { kicker: favs ? 'Favoritos de todas as lojas' : st.name, title: favs ? 'Favoritos' : S.cat || S.brand || 'Coleção', filters: !favs, count: L.length === 1 ? '1 peça' : L.length + ' peças', empty: !L.length, emptyT: favs ? 'Nenhum favorito ainda.' : 'Nenhuma peça encontrada.', emptyB: favs ? 'Explorar a coleção' : 'Limpar filtros', emptyOn: favs ? () => this.nav('lojas/' + S.sid + '/colecao') : clear },
+        listCards: L.map(p => this.card(p)), catOpts: cats, brandOpts: brands,
+        flt: { q: S.q, cat: S.cat, brand: S.brand, price: S.price, sort: S.sort, avail: S.avail, any: chips.length > 0 }, chips: chips.map(([lab, f]) => ({ lab, aria: 'Remover filtro ' + lab, on: () => this.setState(f) })),
+        h: { q: e => this.setState({ q: e.target.value }), cat: e => this.setState({ cat: e.target.value }), brand: e => this.setState({ brand: e.target.value }), price: e => this.setState({ price: e.target.value }), sort: e => this.setState({ sort: e.target.value }), avail: e => this.setState({ avail: e.target.checked }), clear }
+      });
+    }
+    if (r === 'product') {
+      const p = this.P(S.pid), q = S.v ? this.qty(p, S.sid, S.v) : 0, inb = (this.bag().find(l => l.id === p.id && l.v === S.v) || {}).q || 0, oq = S.v ? this.qty(p, ot.id, S.v) : this.tot(p, ot.id), fav = S.favs.includes(p.id);
+      let stock = !S.v ? 'Escolha uma variação.' : q === 0 ? 'Indisponível na ' + st.short + '.' : q === 1 ? 'Última unidade na ' + st.short + '.' : q + ' unidades na ' + st.short + '.'; if (q && inb >= q) stock += ' Já está na sua sacola.';
+      const gal = p.imgs.map((g, i) => ({ img: g[0], bg: 'url("' + g[0] + '")', pos: g[1], sel: i === S.gal, bd: i === S.gal ? '#1B2348' : 'transparent', lab: 'Foto ' + (i + 1), on: () => this.setState({ gal: i }) })), m = gal[S.gal] || gal[0], dis = !S.v || q === 0;
+      v.pd = { name: p.name, brand: p.brand || p.cat, sku: p.sku, price: this.money(p.price), desc: p.desc, alt: p.name + '. ' + p.desc, mImg: m.img, mBg: 'url("' + m.img + '")', mPos: m.pos, gal, multi: gal.length > 1,
+        hasVars: p.variants.length > 1, vars: p.variants.map(x => ({ v: x, sel: S.v === x, bg: S.v === x ? '#1B2348' : 'transparent', fg: S.v === x ? '#fff' : '#252525', bd: S.v === x ? '#1B2348' : '#CFC6B5', on: () => this.setState({ v: x }) })),
+        stock, tone: q ? '#2E5E3A' : '#A51C68', hasOther: oq > 0, otherLab: 'Disponível também na ' + ot.short + ' →', otherHref: this.base(ot.id) + '/produto/' + p.id,
+        dis, addLab: dis && S.v ? 'Indisponível nesta loja' : 'Adicionar à sacola', addBg: dis ? '#DDD6C9' : '#1B2348', addFg: dis ? '#5A5A5A' : '#fff', cur: dis ? 'not-allowed' : 'pointer', add: () => this.add(p),
+        ask: () => this.openWA('Consultar esta peça', 'Olá, ' + st.name + '! Gostaria de saber mais sobre esta peça:\n\n' + p.name + ' (' + p.sku + ') – ' + this.money(p.price) + '\n' + this.plink(p)),
+        isFav: fav, heart: fav ? '#A51C68' : 'none', favLab: fav ? 'Remover dos favoritos' : 'Salvar nos favoritos', fav: () => this.toggleFav(p.id) };
+    }
+    if (r === 'bag') {
+      const B = this.bag(); let sub = 0, n = 0;
+      const lines = B.map((l, i) => { const p = this.P(l.id); if (!p) return null; const max = this.qty(p, S.sid, l.v); sub += p.price * l.q; n += l.q; const warn = max === 0 ? 'Indisponível nesta loja. Remova da sacola.' : l.q > max ? 'Só há ' + max + ' disponível.' : '';
+        return { name: p.name, sku: p.sku, v: l.v, img: p.imgs[0][0], bg: 'url("' + p.imgs[0][0] + '")', pos: p.imgs[0][1], href: bs + '/produto/' + p.id, q: l.q, unit: this.money(p.price), tot: this.money(p.price * l.q), qLab: 'Quantidade de ' + p.name, hasWarn: !!warn, warn, incDis: l.q >= max, decDis: l.q <= 1, incOp: l.q >= max ? .35 : 1, decOp: l.q <= 1 ? .35 : 1,
+          inc: () => { const b = B.slice(); b[i] = Object.assign({}, l, { q: Math.min(max, l.q + 1) }); this.setBag(b); }, dec: () => { const b = B.slice(); b[i] = Object.assign({}, l, { q: Math.max(1, l.q - 1) }); this.setBag(b); }, rm: () => { this.setBag(B.filter((_, j) => j !== i)); this.toast('Item removido'); } }; }).filter(Boolean);
+      const on = this.bag(ot.id).reduce((a, l) => a + l.q, 0);
+      v.bag = { lines, empty: !lines.length, has: lines.length > 0, n: n === 1 ? '1 item' : n + ' itens', sub: this.money(sub), otherNote: on ? 'Você tem ' + on + ' item(ns) salvo(s) na sacola da ' + ot.short + '.' : '', hasErr: !!S.bErr, err: S.bErr,
+        send: () => { if (B.some(l => l.q > this.qty(this.P(l.id), S.sid, l.v))) { this.setState({ bErr: 'Ajuste os itens sem estoque antes de continuar.' }); return; } this.setState({ bErr: '' });
+          this.openWA('Pedido — ' + st.short, 'Olá, ' + st.name + '! Gostaria de solicitar este pedido:\n\nLoja: ' + st.name + '\n\n' + B.map((l, i) => { const p = this.P(l.id); return (i + 1) + '. ' + p.name + ' (' + p.sku + ')\n   Variação: ' + l.v + ' · Qtd: ' + l.q + ' · ' + this.money(p.price * l.q) + '\n   ' + this.plink(p); }).join('\n') + '\n\nSubtotal: ' + this.money(sub) + '\n\nSei que disponibilidade, frete e pagamento serão confirmados no atendimento.'); } };
+    }
+    return v;
+  }
+}
+</script>
+</body>
+</html>
